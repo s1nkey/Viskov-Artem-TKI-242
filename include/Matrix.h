@@ -77,20 +77,18 @@ namespace miit::algebra
 		Matrix& operator = (Matrix&& other) noexcept = default;
 
 		/**
-		 * @brief Получить элемент матрицы по индексам
-		 * @param row Индекс строки
-		 * @param column Индекс столбца
-		 * @return Ссылка на выбранный элемент матрицы
+		 * @brief Получить строку матрицы по индексу
+		 * @param row Индекс строки (отрицательный индекс отсчитывается с конца)
+		 * @return Ссылка на выбранную строку матрицы
 		 */
-		int& operator () (const int rows, const int columns);
+		std::vector<int>& operator [] (const int row);
 
 		/**
-		 * @brief Получить элемент неизменяемой матрицы по индексам
-		 * @param row Индекс строки
-		 * @param column Индекс столбца
-		 * @return Константная ссылка на выбранный элемент матрицы
+		 * @brief Получить строку неизменяемой матрицы по индексу
+		 * @param row Индекс строки (отрицательный индекс отсчитывается с конца)
+		 * @return Константная ссылка на выбранную строку матрицы
 		 */
-		const int& operator () (const int row, const int column) const;
+		const std::vector<int>& operator [] (const int row) const;
 
 		/**
 		 * @brief Найти минимальное значение в матрице
@@ -121,12 +119,6 @@ namespace miit::algebra
 		 * @param generator Генератор значений
 		 */
 		void fill(const Generator& generator);
-
-		/**
-		 * @brief Вставить столбец из нулей после указанного столбца
-		 * @param columnIndex Индекс столбца, после которого выполняется вставка
-		 */
-		void insertZeroColumn(const size_t columnIndex);
 
 		/**
 		 * @brief Вывести матрицу в поток
