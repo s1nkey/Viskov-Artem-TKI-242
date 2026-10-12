@@ -14,6 +14,15 @@ namespace miit::algebra
 		 */
 		Matrix result;
 
+		/**
+		 * @brief Проверить, содержит ли столбец указанное значение
+		 * @param matrix Матрица для проверки
+		 * @param column Индекс столбца
+		 * @param value Искомое значение
+		 * @return true, если значение есть в столбце, иначе false
+		 */
+		bool columnContains(const Matrix& matrix, const size_t column, const int value) const;
+
 	public:
 		/**
 		 * @brief Создать объект второго задания варианта 5
