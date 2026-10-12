@@ -1,43 +1,39 @@
-#include "../include/Task2.h"
+#pragma once
+#include "Exercise.h"
 
 namespace miit::algebra
 {
-	Task2::Task2(Matrix& matrix)
-		: Exercise(matrix)
+	/**
+	 * @brief Реализация второго задания варианта 5
+	 */
+	class Task2 : public Exercise
 	{
-	}
+	private:
+		/**
+		 * @brief Матрица с результатом второго задания
+		 */
+		Matrix result;
 
-	Matrix& Task2::Solve()
-	{
-		result = OurMatrix;
+		/**
+		 * @brief Проверить, содержит ли столбец указанное значение
+		 * @param matrix Матрица для проверки
+		 * @param column Индекс столбца
+		 * @param value Искомое значение
+		 * @return true, если значение есть в столбце, иначе false
+		 */
+		bool columnContains(const Matrix& matrix, const size_t column, const int value) const;
 
-		const int maximum = result.maximum();
+	public:
+		/**
+		 * @brief Создать объект второго задания варианта 5
+		 * @param matrix Матрица, над которой будет выполняться задание
+		 */
+		explicit Task2(Matrix& matrix);
 
-		size_t column = 0;
-		while (column < result.columnsCount())
-		{
-			bool containsMaximum = false;
-
-			for (size_t row = 0; row < result.rowsCount(); ++row)
-			{
-				if (result(row, column) == maximum)
-				{
-					containsMaximum = true;
-					break;
-				}
-			}
-
-			if (containsMaximum)
-			{
-				result.insertZeroColumn(column);
-				column += 2;
-			}
-			else
-			{
-				++column;
-			}
-		}
-
-		return result;
-	}
+		/**
+		 * @brief Вставить после каждого столбца, содержащего максимальный элемент матрицы, столбец из нулей
+		 * @return Матрица после выполнения второго задания
+		 */
+		Matrix& Solve() override;
+	};
 }
