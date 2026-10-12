@@ -13,17 +13,18 @@ namespace miit::algebra
 
 		for (size_t i = 0; i < result.rowsCount(); ++i)
 		{
+			std::vector<int>& row = result[static_cast<int>(i)];
 			size_t maxColumn = 0;
 
 			for (size_t j = 1; j < result.columnsCount(); ++j)
 			{
-				if (result(i, j) > result(i, maxColumn))
+				if (row[j] > row[maxColumn])
 				{
 					maxColumn = j;
 				}
 			}
 
-			result(i, maxColumn) = -result(i, maxColumn);
+			row[maxColumn] = -row[maxColumn];
 		}
 
 		return result;
