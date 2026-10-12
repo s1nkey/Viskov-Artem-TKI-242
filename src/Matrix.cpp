@@ -32,32 +32,22 @@ namespace miit::algebra
 		return !(*this == other);
 	}
 
-	int& Matrix::operator () (const int row, const int column)
+	std::vector<int>& Matrix::operator [] (const int row)
 	{
-		return const_cast<int&>(static_cast<const Matrix&>(*this)(row, column));
+		return const_cast<std::vector<int>&>(static_cast<const Matrix&>(*this)[row]);
 	}
 
-	const int& Matrix::operator () (const int rows, const int columns) const
+	const std::vector<int>& Matrix::operator [] (const int row) const
 	{
-		int row = rows;
-		int column = columns;
+		const int rowsTotal = static_cast<int>(data.size());
+		const int actualRow = row < 0 ? rowsTotal + row : row;
 
-		if (row < 0)
+		if (actualRow < 0 || actualRow >= rowsTotal)
 		{
-			row = data.size() + row;
+			ERROR("Выход за пределы матрицы");
 		}
 
-		if (column < 0)
-		{
-			column = data[0].size() + column;
-		}
-
-		if (row >= data.size() || column >= data[0].size())
-		{
-			throw std::out_of_range("Выход за пределы матрицы");
-		}
-
-		return data[row][column];
+		return data[static_cast<size_t>(actualRow)];
 	}
 
 	const int& Matrix::minimum() const
@@ -128,19 +118,6 @@ namespace miit::algebra
 			{
 				value = generator.generate();
 			}
-		}
-	}
-
-	void Matrix::insertZeroColumn(const size_t columnIndex)
-	{
-		if (columnIndex >= columnsCount())
-		{
-			ERROR("Индекс столбца вне диапазона");
-		}
-
-		for (std::vector<int>& row : data)
-		{
-			row.insert(row.begin() + static_cast<std::ptrdiff_t>(columnIndex + 1), 0);
 		}
 	}
 
