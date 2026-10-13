@@ -48,7 +48,6 @@ namespace miit::algebra
 
 			if (columnContains(OurMatrix, column, maximum))
 			{
-				// Столбец из нулей уже создан конструктором Matrix, пропускаем его
 				++target;
 			}
 		}
