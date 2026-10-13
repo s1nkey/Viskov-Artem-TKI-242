@@ -1,39 +1,58 @@
-#pragma once
-#include "Exercise.h"
+#include "../include/Task2.h"
 
 namespace miit::algebra
 {
-	/**
-	 * @brief Реализация второго задания варианта 5
-	 */
-	class Task2 : public Exercise
+	Task2::Task2(Matrix& matrix)
+		: Exercise(matrix)
 	{
-	private:
-		/**
-		 * @brief Матрица с результатом второго задания
-		 */
-		Matrix result;
+	}
 
-		/**
-		 * @brief Проверить, содержит ли столбец указанное значение
-		 * @param matrix Матрица для проверки
-		 * @param column Индекс столбца
-		 * @param value Искомое значение
-		 * @return true, если значение есть в столбце, иначе false
-		 */
-		bool columnContains(const Matrix& matrix, const size_t column, const int value) const;
+	bool Task2::columnContains(const Matrix& matrix, const size_t column, const int value) const
+	{
+		for (size_t row = 0; row < matrix.rowsCount(); ++row)
+		{
+			if (matrix[static_cast<int>(row)][column] == value)
+			{
+				return true;
+			}
+		}
 
-	public:
-		/**
-		 * @brief Создать объект второго задания варианта 5
-		 * @param matrix Матрица, над которой будет выполняться задание
-		 */
-		explicit Task2(Matrix& matrix);
+		return false;
+	}
 
-		/**
-		 * @brief Вставить после каждого столбца, содержащего максимальный элемент матрицы, столбец из нулей
-		 * @return Матрица после выполнения второго задания
-		 */
-		Matrix& Solve() override;
-	};
+	Matrix& Task2::Solve()
+	{
+		const int maximum = OurMatrix.maximum();
+		const size_t rows = OurMatrix.rowsCount();
+		const size_t columns = OurMatrix.columnsCount();
+
+		size_t maximumColumns = 0;
+		for (size_t column = 0; column < columns; ++column)
+		{
+			if (columnContains(OurMatrix, column, maximum))
+			{
+				++maximumColumns;
+			}
+		}
+
+		result = Matrix(static_cast<int>(rows), static_cast<int>(columns + maximumColumns));
+
+		size_t target = 0;
+		for (size_t column = 0; column < columns; ++column)
+		{
+			for (size_t row = 0; row < rows; ++row)
+			{
+				result[static_cast<int>(row)][target] = OurMatrix[static_cast<int>(row)][column];
+			}
+			++target;
+
+			if (columnContains(OurMatrix, column, maximum))
+			{
+				// Столбец из нулей уже создан конструктором Matrix, пропускаем его
+				++target;
+			}
+		}
+
+		return result;
+	}
 }
