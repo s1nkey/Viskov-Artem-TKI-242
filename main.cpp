@@ -4,9 +4,12 @@
 #include <iostream>
 #include <vector>
 
+/**
+ * @brief Продемонстрировать работу системы складского учёта.
+ * @return 0 при успешном завершении программы.
+ */
 int main()
 {
-    // Продукты поступили от производителей.
     Warehouse warehouse("Центральный склад");
     warehouse.addProduct(Product(1, "Сахар", "Сахарный завод", 80, 100, 10));
     warehouse.addProduct(Product(2, "Мука", "Мельница", 60, 80, 5));
@@ -19,8 +22,6 @@ int main()
     warehouse.addStore(secondStore);
     warehouse.addWholesaleClient(buyer);
 
-    // Полиморфизм: одна коллекция базового типа Client.
-    // Ссылки позволяют обойтись без указателей и сохранить наследников.
     const std::vector<std::reference_wrapper<const Client>> clients =
     {
         std::cref(store), std::cref(secondStore), std::cref(buyer)
@@ -32,12 +33,9 @@ int main()
         std::cout << client.getInfo() << '\n';
     }
 
-    // Магазин заказал 2 упаковки сахара (в упаковке 10 штук).
     warehouse.makeStoreOrder(1, 1, 2, "2026-10-20");
     warehouse.makeStoreOrder(1, 2, 3, "2026-10-21");
-    // Оптовый клиент купил 12 штук сахара.
     warehouse.makeWholesaleSale(3, 1, 12, "2026-10-22");
-    // Поступила новая партия муки.
     warehouse.receiveProduct(2, 20);
 
     std::cout << "\n1. Ассортимент на складе:\n";
