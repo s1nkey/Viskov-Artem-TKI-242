@@ -2,8 +2,6 @@
 
 #include <stdexcept>
 
-// Дата записывается в формате ГГГГ-ММ-ДД.
-// В таком формате строки можно сравнивать как даты.
 namespace
 {
     bool isValidDate(const std::string& date)
@@ -193,7 +191,6 @@ int Warehouse::makeStoreOrder(const int storeId, const int productId,
         throw std::invalid_argument("Число упаковок должно быть положительным");
     }
     const Product& product = getProduct(productId);
-    // Проверяем количество без умножения, чтобы не было переполнения int.
     if (packageCount > product.getQuantity() / product.getPackSize())
     {
         throw std::runtime_error("Недостаточно товара для упаковок");
