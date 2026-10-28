@@ -24,9 +24,9 @@ private:
 public:
     /**
      * @brief Создать клиента
-     * @param id Идентификатор клиента (положительный)
+     * @param id Идентификатор клиента
      * @param name Название клиента
-     * @param discount Скидка от 0 до 100 процентов
+     * @param discount Скидка
      */
     Client(const int id, const std::string& name, const double discount);
     /**
