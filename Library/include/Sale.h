@@ -1,6 +1,10 @@
 #pragma once
 
+#include "Client.h"
+#include "Product.h"
+
 #include <string>
+#include <vector>
 
 /**
  * @brief Запись об одной продаже одного вида товара
@@ -13,13 +17,13 @@ private:
      */
     int id;
     /**
-     * @brief Идентификатор клиента
+     * @brief Клиенты, участвующие в продаже
      */
-    int clientId;
+    std::vector<Client> clients;
     /**
-     * @brief Идентификатор проданного товара
+     * @brief Товары, участвующие в продаже
      */
-    int productId;
+    std::vector<Product> products;
     /**
      * @brief Количество проданных штук
      */
@@ -37,14 +41,34 @@ public:
     /**
      * @brief Создать запись о продаже
      * @param id Положительный идентификатор продажи
-     * @param clientId Положительный идентификатор клиента
-     * @param productId Положительный идентификатор товара
+     * @param client Клиент, участвующий в продаже
+     * @param product Товар, участвующий в продаже
      * @param quantity Положительное число проданных штук
      * @param date Непустая строка даты продажи
      * @param total Неотрицательная сумма продажи
      */
-    Sale(const int id, const int clientId, const int productId,
+    Sale(const int id, const Client& client, const Product& product,
          const int quantity, const std::string& date, const double total);
+    /**
+     * @brief Получить данные клиента продажи
+     * @return Ссылка на клиента
+     */
+    const Client& getClient() const;
+    /**
+     * @brief Получить данные товара продажи
+     * @return Ссылка на товар
+     */
+    const Product& getProduct() const;
+    /**
+     * @brief Получить клиентов продажи
+     * @return Ссылка на вектор клиентов
+     */
+    const std::vector<Client>& getClients() const;
+    /**
+     * @brief Получить товары продажи
+     * @return Ссылка на вектор товаров
+     */
+    const std::vector<Product>& getProducts() const;
 
     /**
      * @brief Получить идентификатор продажи
