@@ -11,7 +11,7 @@ namespace
             return false;
         }
 
-        for (int i = 0; i < 10; ++i)
+        for (std::size_t i = 0; i < date.size(); ++i)
         {
             if (i != 4 && i != 7 && (date[i] < '0' || date[i] > '9'))
             {
@@ -62,10 +62,15 @@ void Warehouse::addProduct(const Product& product)
     products.push_back(product);
 }
 
-void Warehouse::addStore(const Store& store)
+int Warehouse::addStore(const Store& store)
 {
     for (const Store& existing : stores)
     {
+        if (existing.getName() == store.getName() &&
+            existing.getAddress() == store.getAddress())
+        {
+            return existing.getId();
+        }
         if (existing.getId() == store.getId())
         {
             throw std::invalid_argument("Клиент с таким ID уже есть");
@@ -79,9 +84,10 @@ void Warehouse::addStore(const Store& store)
         }
     }
     stores.push_back(store);
+    return store.getId();
 }
 
-void Warehouse::addWholesaleClient(const WholesaleClient& client)
+int Warehouse::addWholesaleClient(const WholesaleClient& client)
 {
     for (const Store& existing : stores)
     {
@@ -92,12 +98,18 @@ void Warehouse::addWholesaleClient(const WholesaleClient& client)
     }
     for (const WholesaleClient& existing : wholesaleClients)
     {
+        if (existing.getName() == client.getName() &&
+            existing.getContactPerson() == client.getContactPerson())
+        {
+            return existing.getId();
+        }
         if (existing.getId() == client.getId())
         {
             throw std::invalid_argument("Клиент с таким ID уже есть");
         }
     }
     wholesaleClients.push_back(client);
+    return client.getId();
 }
 
 Product& Warehouse::findProduct(const int productId)
@@ -158,7 +170,7 @@ void Warehouse::receiveProduct(const int productId, const int quantity)
     findProduct(productId).addQuantity(quantity);
 }
 
-int Warehouse::addSale(const int clientId, const int productId,
+int Warehouse::addSale(const Client& client, const int productId,
                        const int quantity, const double discount,
                        const std::string& date)
 {
@@ -176,7 +188,7 @@ int Warehouse::addSale(const int clientId, const int productId,
     const double total = product.getPrice() * quantity *
                          (100.0 - discount) / 100.0;
     const int saleId = nextSaleId;
-    sales.emplace_back(saleId, clientId, productId, quantity, date, total);
+    sales.emplace_back(saleId, client, product, quantity, date, total);
     product.removeQuantity(quantity);
     ++nextSaleId;
     return saleId;
@@ -196,14 +208,14 @@ int Warehouse::makeStoreOrder(const int storeId, const int productId,
         throw std::runtime_error("Недостаточно товара для упаковок");
     }
     const int quantity = packageCount * product.getPackSize();
-    return addSale(storeId, productId, quantity, store.getDiscount(), date);
+    return addSale(store, productId, quantity, store.getDiscount(), date);
 }
 
 int Warehouse::makeWholesaleSale(const int clientId, const int productId,
                                  const int quantity, const std::string& date)
 {
     const WholesaleClient& client = getWholesaleClient(clientId);
-    return addSale(clientId, productId, quantity, client.getDiscount(), date);
+    return addSale(client, productId, quantity, client.getDiscount(), date);
 }
 
 std::vector<Product> Warehouse::getAvailableProducts() const
