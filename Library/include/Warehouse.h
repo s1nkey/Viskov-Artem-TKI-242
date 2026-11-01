@@ -47,14 +47,14 @@ private:
     Product& findProduct(const int productId);
     /**
      * @brief Записать продажу со скидкой и уменьшить остаток товара
-     * @param clientId Идентификатор клиента
+     * @param client Клиент
      * @param productId Идентификатор товара
      * @param quantity Число продаваемых штук
      * @param discount Скидка клиента в процентах
      * @param date Дата продажи в формате ГГГГ-ММ-ДД
      * @return Идентификатор добавленной продажи
      */
-    int addSale(const int clientId, const int productId,
+    int addSale(const Client& client, const int productId,
                 const int quantity, const double discount,
                 const std::string& date);
 
@@ -76,15 +76,17 @@ public:
      */
     void addProduct(const Product& product);
     /**
-     * @brief Добавить магазин в список клиентов
+     * @brief Зарегистрировать магазин или найти существующий
      * @param store Магазин для добавления
+     * @return ID зарегистрированного магазина
      */
-    void addStore(const Store& store);
+    int addStore(const Store& store);
     /**
-     * @brief Добавить оптового клиента
+     * @brief Зарегистрировать оптового клиента или найти существующего
      * @param client Клиент для добавления
+     * @return ID зарегистрированного клиента
      */
-    void addWholesaleClient(const WholesaleClient& client);
+    int addWholesaleClient(const WholesaleClient& client);
 
     /**
      * @brief Найти товар по идентификатору
