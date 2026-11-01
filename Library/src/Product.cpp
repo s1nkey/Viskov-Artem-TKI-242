@@ -1,52 +1,74 @@
-#include "Product.h"
+#include "Client.h"
 
+#include <algorithm>
 #include <stdexcept>
 
-Product::Product(const int id, const std::string& name,
-                 const std::string& manufacturer, const double price,
-                 const int quantity, const int packSize)
-    : id(id), name(name), manufacturer(manufacturer), price(price),
-      quantity(quantity), packSize(packSize)
+int Client::nextId = 1;
+std::vector<int> Client::activeIds;
+
+Client::Client(const int id, const std::string& name, const double discount)
+    : id(id), name(name), discount(discount)
 {
-    if (id <= 0 || name.empty() || manufacturer.empty() ||
-        price < 0 || quantity < 0 || packSize <= 0)
+    if (id <= 0 || name.empty() || discount < 0 || discount > 100)
     {
-        throw std::invalid_argument("Неверные данные товара");
+        throw std::invalid_argument("Неверные данные клиента");
+    }
+    if (std::find(activeIds.begin(), activeIds.end(), id) != activeIds.end())
+    {
+        throw std::invalid_argument("Клиент с таким ID уже существует");
+    }
+    activeIds.push_back(id);
+    if (id >= nextId)
+    {
+        nextId = id + 1;
     }
 }
 
-int Product::getId() const { return id; }
-const std::string& Product::getName() const { return name; }
-const std::string& Product::getManufacturer() const { return manufacturer; }
-double Product::getPrice() const { return price; }
-int Product::getQuantity() const { return quantity; }
-int Product::getPackSize() const { return packSize; }
-
-std::string Product::getInfo() const
+Client::Client(const std::string& name, const double discount)
+    : Client(nextId, name, discount)
 {
-    return name + " (" + manufacturer + "), цена: " +
-           std::to_string(price) + ", остаток: " +
-           std::to_string(quantity) + " шт.";
 }
 
-void Product::addQuantity(const int amount)
+Client::Client(const Client& other)
+    : id(other.id), name(other.name), discount(other.discount)
 {
-    if (amount <= 0)
-    {
-        throw std::invalid_argument("Количество должно быть положительным");
-    }
-    quantity += amount;
+    activeIds.push_back(id);
 }
 
-void Product::removeQuantity(const int amount)
+Client& Client::operator=(const Client& other)
 {
-    if (amount <= 0)
+    if (this != &other)
     {
-        throw std::invalid_argument("Количество должно быть положительным");
+        name = other.name;
+        discount = other.discount;
+        if (id != other.id)
+        {
+            activeIds.push_back(other.id);
+            const auto it = std::find(activeIds.begin(), activeIds.end(), id);
+            if (it != activeIds.end())
+            {
+                activeIds.erase(it);
+            }
+            id = other.id;
+        }
     }
-    if (amount > quantity)
+    return *this;
+}
+
+Client::~Client()
+{
+    const auto it = std::find(activeIds.begin(), activeIds.end(), id);
+    if (it != activeIds.end())
     {
-        throw std::runtime_error("Недостаточно товара на складе");
+        activeIds.erase(it);
     }
-    quantity -= amount;
+}
+
+int Client::getId() const { return id; }
+const std::string& Client::getName() const { return name; }
+double Client::getDiscount() const { return discount; }
+
+std::string Client::getInfo() const
+{
+    return name + ", скидка: " + std::to_string(discount) + "%";
 }
