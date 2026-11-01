@@ -24,6 +24,14 @@ public:
      */
     Store(const int id, const std::string& name, const double discount,
           const std::string& address);
+    /**
+     * @brief Создать магазин с автоматическим ID
+     * @param name Наименование магазина
+     * @param discount Скидка в процентах
+     * @param address Адрес магазина
+     */
+    Store(const std::string& name, const double discount,
+          const std::string& address);
 
     /**
      * @brief Получить адрес магазина
