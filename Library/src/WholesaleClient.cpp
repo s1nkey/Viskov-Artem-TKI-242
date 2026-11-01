@@ -13,6 +13,17 @@ WholesaleClient::WholesaleClient(const int id, const std::string& name,
     }
 }
 
+WholesaleClient::WholesaleClient(const std::string& name,
+                                 const double discount,
+                                 const std::string& contactPerson)
+    : Client(name, discount), contactPerson(contactPerson)
+{
+    if (contactPerson.empty())
+    {
+        throw std::invalid_argument("Контактное лицо не указано");
+    }
+}
+
 const std::string& WholesaleClient::getContactPerson() const
 {
     return contactPerson;
