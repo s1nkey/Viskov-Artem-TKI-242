@@ -61,6 +61,24 @@ int main()
     {
         std::cout << info << '\n';
     }
-
+    std::cout << "\n5. Автоматическое присвоение ID:\n";
+    
+    const Store newStore("Магазин Новый", 5, "ул. Складская, 7");
+    const WholesaleClient newBuyer("Новый оптовик", 10, "Пётр Смирнов");
+    const Product newProduct("Гречка", "Крупяной завод", 90, 40, 5);
+    
+    const int newStoreId = warehouse.addStore(newStore);
+    const int newBuyerId = warehouse.addWholesaleClient(newBuyer);
+    warehouse.addProduct(newProduct);
+    
+    std::cout << "ID нового магазина: " << newStoreId << '\n';
+    std::cout << "ID нового оптовика: " << newBuyerId << '\n';
+    std::cout << "ID нового товара: " << newProduct.getId() << '\n';
+    
+    const Store sameStore("Магазин Новый", 5, "ул. Складская, 7");
+    const int existingStoreId = warehouse.addStore(sameStore);
+    
+    std::cout << "Повторная регистрация магазина, ID в системе: "
+              << existingStoreId << '\n';
     return 0;
 }
