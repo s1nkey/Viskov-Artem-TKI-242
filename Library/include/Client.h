@@ -1,6 +1,7 @@
 #pragma once
 
 #include <string>
+#include <vector>
 
 /**
  * @brief Базовый класс клиента склада
@@ -12,6 +13,8 @@ private:
      * @brief Уникальный идентификатор клиента
      */
     int id;
+    static int nextId;
+    static std::vector<int> activeIds;
     /**
      * @brief Название клиента
      */
@@ -30,9 +33,26 @@ public:
      */
     Client(const int id, const std::string& name, const double discount);
     /**
-     * @brief Виртуальный деструктор базового класса
+     * @brief Создать клиента с автоматическим ID
+     * @param name Название клиента
+     * @param discount Скидка
      */
-    virtual ~Client() = default;
+    Client(const std::string& name, const double discount);
+    /**
+     * @brief Скопировать клиента с сохранением ID
+     * @param other Исходный клиент
+     */
+    Client(const Client& other);
+    /**
+     * @brief Присвоить данные клиента с сохранением ID
+     * @param other Исходный клиент
+     * @return Ссылка на текущего клиента
+     */
+    Client& operator=(const Client& other);
+    /**
+     * @brief Уничтожить экземпляр клиента
+     */
+    virtual ~Client();
 
     /**
      * @brief Получить идентификатор клиента
