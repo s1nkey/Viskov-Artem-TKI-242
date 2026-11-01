@@ -24,6 +24,14 @@ public:
      */
     WholesaleClient(const int id, const std::string& name,
                     const double discount, const std::string& contactPerson);
+    /**
+     * @brief Создать оптового клиента с автоматическим ID
+     * @param name Наименование клиента
+     * @param discount Скидка
+     * @param contactPerson Контактное лицо
+     */
+    WholesaleClient(const std::string& name, const double discount,
+                    const std::string& contactPerson);
 
     /**
      * @brief Получить контактное лицо клиента
