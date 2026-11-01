@@ -1,6 +1,7 @@
 #pragma once
 
 #include <string>
+#include <vector>
 
 /**
  * @brief Товар на складе с учётом остатков в штуках и размера упаковки
@@ -12,6 +13,8 @@ private:
      * @brief Уникальный идентификатор товара
      */
     int id;
+    static int nextId;
+    static std::vector<int> activeIds;
     /**
      * @brief Наименование товара
      */
@@ -36,7 +39,7 @@ private:
 public:
     /**
      * @brief Создать товар
-     * @param id Положительный идентификатор товара
+     * @param id Индентификатор товара
      * @param name Наименование товара
      * @param manufacturer Производитель товара
      * @param price Цена одной штуки
@@ -46,6 +49,31 @@ public:
     Product(const int id, const std::string& name,
             const std::string& manufacturer, const double price,
             const int quantity, const int packSize);
+    /**
+     * @brief Создать товар с автоматическим ID
+     * @param name Наименование товара
+     * @param manufacturer Производитель товара
+     * @param price Цена одной штуки
+     * @param quantity Начальный остаток
+     * @param packSize Количество штук в упаковке
+     */
+    Product(const std::string& name, const std::string& manufacturer,
+            const double price, const int quantity, const int packSize);
+    /**
+     * @brief Скопировать товар с сохранением ID
+     * @param other Исходный товар
+     */
+    Product(const Product& other);
+    /**
+     * @brief Присвоить данные товара с сохранением ID
+     * @param other Исходный товар
+     * @return Ссылка на текущий товар
+     */
+    Product& operator=(const Product& other);
+    /**
+     * @brief Уничтожить экземпляр товара
+     */
+    ~Product();
 
     /**
      * @brief Получить идентификатор товара
